@@ -20,7 +20,6 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        playerInput.EnableGameplayInput();//¼¤»î
     }
 
     private void OnEnable()

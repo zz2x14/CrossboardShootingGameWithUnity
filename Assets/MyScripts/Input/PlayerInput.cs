@@ -13,6 +13,9 @@ public class PlayerInput : ScriptableObject, IGameplayActions
     public event UnityAction<Vector2> OnPlayerMove = delegate { };//给予事件一个空委托，这样事件就不会空了，调用时不需要再做判断
     public event UnityAction OnStopMove = delegate { };
 
+    public event UnityAction OnStartFire = delegate { };
+    public event UnityAction OnStopFire = delegate { };
+
     private void OnEnable()
     {
         inputActions = new InputActions();
@@ -43,6 +46,18 @@ public class PlayerInput : ScriptableObject, IGameplayActions
        if(context.phase == InputActionPhase.Canceled)
         {
             OnStopMove();
+        }
+    }
+
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            OnStartFire();
+        }
+        if (context.phase == InputActionPhase.Canceled)
+        {
+            OnStopFire();
         }
     }
 }
