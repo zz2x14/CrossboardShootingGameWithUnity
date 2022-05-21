@@ -8,6 +8,9 @@ public class Pool
     [SerializeField] private GameObject prefab;
     public GameObject Prefab => prefab;
     [SerializeField] private int poolSize;
+    public int PoolSize => poolSize;
+
+    public int PoolRuntimeSize => quene.Count;
 
     private Queue<GameObject> quene;
 

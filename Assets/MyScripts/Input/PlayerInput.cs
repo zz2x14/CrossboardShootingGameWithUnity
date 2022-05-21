@@ -51,11 +51,11 @@ public class PlayerInput : ScriptableObject, IGameplayActions
 
     public void OnFire(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed)
+        if (context.performed)
         {
             OnStartFire();
         }
-        if (context.phase == InputActionPhase.Canceled)
+        if (context.canceled)
         {
             OnStopFire();
         }

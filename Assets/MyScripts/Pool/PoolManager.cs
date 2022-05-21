@@ -5,6 +5,8 @@ using UnityEngine;
 public class PoolManager : SingletonTool<PoolManager>
 {
     [SerializeField] private Pool[] playerBulletPool;
+    [SerializeField] private Pool[] enemyBulletPool;
+    [SerializeField] private Pool[] vFXPool;
     
     private Dictionary<GameObject,Pool> poolDic = new Dictionary<GameObject,Pool>();
 
@@ -13,6 +15,28 @@ public class PoolManager : SingletonTool<PoolManager>
         base.Awake();
 
         InitPool(playerBulletPool);
+        InitPool(enemyBulletPool);
+        InitPool(vFXPool);
+    }
+
+#if UNITY_EDITOR
+    private void OnDestroy()
+    {
+        CheckPoolSize(playerBulletPool);
+        CheckPoolSize(enemyBulletPool);
+        CheckPoolSize(vFXPool);
+    }
+#endif
+
+    private void CheckPoolSize(Pool[] pools )
+    {
+        foreach (var pool in pools)
+        {
+            if(pool.PoolRuntimeSize > pool.PoolSize)
+            {
+                Debug.LogWarning($"{pool.Prefab.name}runtimeSize{pool.PoolRuntimeSize}biger than size{pool.PoolSize}");
+            }
+        }
     }
 
     private void InitPool(Pool[] pool)
