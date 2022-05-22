@@ -15,7 +15,6 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
 
     private Coroutine speedChangeCor;
-    private Coroutine limitPosCor;
 
     private void Start()
     {
@@ -41,11 +40,10 @@ public class PlayerMovement : MonoBehaviour
             StopCoroutine(speedChangeCor);
         }
 
-       
         speedChangeCor = StartCoroutine(MoveSpeedChangeCoroutine(accelerationTime, moveInput * moveSpeed,
             Quaternion.AngleAxis(moveRotateAngle * moveInput.y, Vector3.right)));//沿着角色的X轴旋转N度( * 上输入的Y值，不同方向移动时对应不同的角度)
-         
-        limitPosCor = StartCoroutine(LimitPlayerPosCoroutine());
+
+        StartCoroutine(nameof(LimitPlayerPosCoroutine));
     }
 
     private void StopMove()
@@ -56,11 +54,7 @@ public class PlayerMovement : MonoBehaviour
         }
         speedChangeCor = StartCoroutine(MoveSpeedChangeCoroutine(decelerationTime, Vector2.zero,Quaternion.identity));
 
-        if (limitPosCor != null)
-        {
-            StopCoroutine("LimitPlayerPosCoroutine");
-        }
-        
+        StopCoroutine(nameof(LimitPlayerPosCoroutine));
     }
 
     IEnumerator LimitPlayerPosCoroutine()

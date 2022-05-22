@@ -25,7 +25,7 @@ public abstract class BulletBase : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+   protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         //使用这样方法的优点（此处）：所有子弹的逻辑可以在这一处处理
         //设置对应的物理碰撞 - 使用TryGetComponent<Character>获得碰撞对象身上的Character脚本

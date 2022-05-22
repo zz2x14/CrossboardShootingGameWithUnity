@@ -23,6 +23,17 @@ public class PlayerController : Character
     [SerializeField,Range(0,3)] private int powerLevel;
     [SerializeField] private float fireInterval;
 
+    [Header("闪避")]
+    [SerializeField] private int dodgeEnergyCost;
+    [SerializeField] private float maxRollAngle;
+    [SerializeField] private float dodgeRollSpeed;
+    [SerializeField] private Vector3 dodgeScale;
+    private float curDodgeAngle;
+    private bool isDodging = false;
+    private float  dodgeDuration;
+
+    private Collider2D coll2D;
+
     private WaitForSeconds fireWaitForSeconds;
     private WaitForSeconds healthRegenerateWFS;
 
@@ -30,12 +41,16 @@ public class PlayerController : Character
 
     private void Start()
     {
+        coll2D = GetComponent<Collider2D>();
+
         playerInput.EnableGameplayInput();
 
         fireWaitForSeconds = new WaitForSeconds(fireInterval);//避免在循环内声明新的变量
         healthRegenerateWFS = new WaitForSeconds(healthRegenerateInterval);
 
         statusBar_HUD.InitializeFillAmount(curHealth,maxHealth);
+
+        dodgeDuration = maxRollAngle / dodgeRollSpeed;
     }
 
     protected override void OnEnable()
@@ -44,12 +59,14 @@ public class PlayerController : Character
 
         playerInput.OnStartFire += Fire;
         playerInput.OnStopFire += StopFire;
+        playerInput.OnPlayerDodge += Dodge;
     }
 
     private void OnDisable()
     {
         playerInput.OnStartFire -= Fire;
         playerInput.OnStopFire -= StopFire;
+        playerInput.OnPlayerDodge -= Dodge;
     }
 
     private void Fire()
@@ -116,6 +133,48 @@ public class PlayerController : Character
     {
         statusBar_HUD.UpdateFillAmount(0f,maxHealth);
         base.Die();
+    }
+
+    private void Dodge()
+    {
+        if (!PlayerEnergy.Instance.IsEnergyEnough(dodgeEnergyCost) || isDodging) return;
+
+        StartCoroutine(nameof(DodgeCor));//认真看自己的代码！
+    }
+
+    IEnumerator DodgeCor()
+    {
+        isDodging = true;
+        coll2D.isTrigger = true;
+
+        PlayerEnergy.Instance.UseEnergy(dodgeEnergyCost);
+
+        curDodgeAngle = 0;
+
+        float t = 0;
+        float t1 = 0; 
+
+        while(curDodgeAngle < maxRollAngle)
+        {
+            curDodgeAngle += dodgeRollSpeed * Time.deltaTime;
+            transform.rotation = Quaternion.AngleAxis(curDodgeAngle, Vector3.right);
+
+            if(curDodgeAngle < maxRollAngle / 2)//旋转进度一半为分界线
+            {
+                t += 1 / dodgeDuration * Time.deltaTime;//闪避旋转时间持续1s，t 增加达到该持续时间的单位(每1s)增加量 - 作为当前缩放值到目标缩放值的线性时间插值参数
+                transform.localScale = Vector3.Lerp(transform.localScale, dodgeScale, t);
+            }
+            else
+            {
+                t1 += 1/dodgeDuration* Time.deltaTime;
+                transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, t1);
+            }
+
+            yield return null;
+        }
+
+        coll2D.isTrigger = false;
+        isDodging = false;
     }
 
 }

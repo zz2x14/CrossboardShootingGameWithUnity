@@ -27,4 +27,11 @@ public class PlayerStandardBullet : BulletBase
     {
         trail.Clear();//删除 TrailRenderer 中的所有点。 对于从新位置重新开始轨迹非常有用。 - 处理子弹重激活后的拖尾效果
     }
+
+    protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        base.OnCollisionEnter2D(collision);
+
+        PlayerEnergy.Instance.ObtainEnergy(PlayerEnergy.HITADDEDVALUE);
+    }
 }

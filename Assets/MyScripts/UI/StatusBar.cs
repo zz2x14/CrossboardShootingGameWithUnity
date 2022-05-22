@@ -32,7 +32,11 @@ public class StatusBar : MonoBehaviour
         delayFillWFS = new WaitForSeconds(delayFillTime);
     }
 
-   
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
     public virtual void InitializeFillAmount(float curValue,float maxValue)
     {
         curFillAmount = curValue / maxValue;
@@ -55,6 +59,8 @@ public class StatusBar : MonoBehaviour
         {
             frontBarImage.fillAmount = targetFillAmount;
             fillCor = StartCoroutine(BufferedFillCor(backBarImage));
+
+            return;//两种情况只会出现一种 直接返回 不用再进行后面的逻辑判断
         }
         //当前的值小于目标值，说明为增加情况
         if (curFillAmount < targetFillAmount)

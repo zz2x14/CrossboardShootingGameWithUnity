@@ -32,7 +32,7 @@ public abstract class Character : MonoBehaviour
 
         curHealth = Mathf.Clamp(curHealth - damageValue, 0, curHealth - damageValue);
 
-        if (isShowHealthBar)
+        if (isShowHealthBar && gameObject.activeSelf)
         {
             healthBar.UpdateFillAmount(curHealth, maxHealth);
         }
@@ -52,9 +52,9 @@ public abstract class Character : MonoBehaviour
 
     protected virtual void RestoreHealth(float value)
     {
-        if (curHealth == value) return;
+        if (curHealth == maxHealth) return;
 
-        curHealth = Mathf.Clamp(curHealth + value, 0 , curHealth);
+        curHealth = Mathf.Clamp(curHealth + value, 0 , maxHealth);
 
         if (isShowHealthBar)
         {

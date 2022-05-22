@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8371786737369669287}
   - component: {fileID: 5752568367094989019}
   m_Layer: 8
-  m_Name: EnemyStandardBullet Tacking
+  m_Name: EnemyStandardBullet Drifting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

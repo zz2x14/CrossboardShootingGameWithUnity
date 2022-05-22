@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBullet_Tacking : BulletBase
+public class EnemyBullet_Drifting : BulletBase
 {
     private void Awake()
     {

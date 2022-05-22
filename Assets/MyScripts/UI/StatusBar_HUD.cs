@@ -7,7 +7,6 @@ public class StatusBar_HUD : StatusBar
 {
     [SerializeField] private Text barValuePercentText;
 
-
     private void UpdateValuePercent()
     {
         barValuePercentText.text = Mathf.RoundToInt(targetFillAmount * 100)  + "%";

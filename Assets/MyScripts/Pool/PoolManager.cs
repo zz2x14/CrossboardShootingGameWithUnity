@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PoolManager : SingletonTool<PoolManager>
 {
+    [SerializeField] private Pool[] enemiesPool;
     [SerializeField] private Pool[] playerBulletPool;
     [SerializeField] private Pool[] enemyBulletPool;
     [SerializeField] private Pool[] vFXPool;
@@ -14,6 +15,7 @@ public class PoolManager : SingletonTool<PoolManager>
     {
         base.Awake();
 
+        InitPool(enemiesPool);
         InitPool(playerBulletPool);
         InitPool(enemyBulletPool);
         InitPool(vFXPool);
@@ -22,6 +24,7 @@ public class PoolManager : SingletonTool<PoolManager>
 #if UNITY_EDITOR
     private void OnDestroy()
     {
+        CheckPoolSize(enemiesPool);
         CheckPoolSize(playerBulletPool);
         CheckPoolSize(enemyBulletPool);
         CheckPoolSize(vFXPool);
