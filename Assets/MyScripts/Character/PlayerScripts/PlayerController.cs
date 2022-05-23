@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerController : Character
 {
+    
     [SerializeField] private bool enableRegenerate = true;
     [SerializeField] private float healthRegenerateInterval;
     [SerializeField,Range(0,0.1f)] private float healthRegeneratePercent;
@@ -22,12 +23,14 @@ public class PlayerController : Character
     [SerializeField] private Transform muzzleBottomPoint;
     [SerializeField,Range(0,3)] private int powerLevel;
     [SerializeField] private float fireInterval;
+    [SerializeField] private AudioData shootAudioData;
 
     [Header("иа╠э")]
     [SerializeField] private int dodgeEnergyCost;
     [SerializeField] private float maxRollAngle;
     [SerializeField] private float dodgeRollSpeed;
     [SerializeField] private Vector3 dodgeScale;
+    [SerializeField] private AudioData dodgeAudioData;
     private float curDodgeAngle;
     private bool isDodging = false;
     private float  dodgeDuration;
@@ -100,6 +103,8 @@ public class PlayerController : Character
                 default:
                     break;
             }
+
+            AudioManager.Instance.PlayRandomSFX(shootAudioData);
             
             yield return fireWaitForSeconds;
         }
@@ -148,6 +153,7 @@ public class PlayerController : Character
         coll2D.isTrigger = true;
 
         PlayerEnergy.Instance.UseEnergy(dodgeEnergyCost);
+        AudioManager.Instance.PlaySFX(dodgeAudioData);
 
         curDodgeAngle = 0;
 

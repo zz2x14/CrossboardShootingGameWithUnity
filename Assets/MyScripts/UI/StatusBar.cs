@@ -23,6 +23,8 @@ public class StatusBar : MonoBehaviour
 
     private Coroutine fillCor;
 
+    private float previousFillAmount;
+
   
     private void Start()
     {
@@ -78,11 +80,12 @@ public class StatusBar : MonoBehaviour
             yield return delayFillWFS;//等待短暂的时间再开始填充
 
         fillTimer = 0f;
+        previousFillAmount = curFillAmount;
 
         while (fillTimer < 1f)
         {
             fillTimer += fillSpeed * Time.deltaTime;
-            curFillAmount = Mathf.Lerp(curFillAmount, targetFillAmount, fillTimer);
+            curFillAmount = Mathf.Lerp(previousFillAmount, targetFillAmount, fillTimer);
             targetFillAmountImage.fillAmount = curFillAmount;//当前填充值逐渐达到目标填充值 - 缓冲效果
             yield return null;
         }

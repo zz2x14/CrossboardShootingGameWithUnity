@@ -4,8 +4,9 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
+    [Header("ËÀÍö")]
     [SerializeField] private GameObject deathVFX;
-
+    [SerializeField] private AudioData[] deathAudioDatas;
     [Header("ÑªÁ¿ÏµÍ³")]
     [SerializeField] protected float maxHealth;
     protected float curHealth;
@@ -46,6 +47,7 @@ public abstract class Character : MonoBehaviour
     protected virtual void Die()
     {
         curHealth = 0;
+        AudioManager.Instance.PlayRandomSFX(deathAudioDatas);
         PoolManager.Instance.Release(deathVFX, transform.position);
         gameObject.SetActive(false); 
     }

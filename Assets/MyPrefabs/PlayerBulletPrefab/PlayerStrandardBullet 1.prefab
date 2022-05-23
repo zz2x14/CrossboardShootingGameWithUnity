@@ -46,6 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8eef0eb3e509a34eb184095b4501727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletHitAudioDatas:
+  - {fileID: 11400000, guid: fa06a0ec025f64a488dcb7742e9377d0, type: 2}
+  - {fileID: 11400000, guid: c91bc9a1b6b80a742bb0af7ff4b9d07e, type: 2}
+  - {fileID: 11400000, guid: a8a07502923cd9b4e8baf925e54e2f31, type: 2}
   damage: 1
   hitVFX: {fileID: 5060298685065931927, guid: 6775c68a79b34db4fa2fd4db2a4cdf74, type: 3}
   flySpeed: 15

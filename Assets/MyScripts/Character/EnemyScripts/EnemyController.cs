@@ -12,6 +12,7 @@ public class EnemyController : MonoBehaviour
 
     [Header("攻击")]
     [SerializeField] private GameObject[] bullets;
+    [SerializeField] private AudioData shootAudioData;
     [SerializeField] private Transform muzzlePoint;
     [SerializeField] private float minFireIntervel;
     [SerializeField] private float maxFireIntervel;
@@ -35,8 +36,10 @@ public class EnemyController : MonoBehaviour
 
         while (gameObject.activeSelf)
         {
+            //此处对应修改为 moveSpeed * Time.fixedDeltaTime - 意味着两点之间的距离 大于 单位固定每帧的移动速度所能够移动的距离
             if (Vector3.Distance(transform.position, nextTargetPoint) > Mathf.Epsilon)
             {
+                //如若下方使用了waitForFixedUpdate(); 那么此处对应的也应该修改为  * Time.fixedDeltaTime
                 transform.position = Vector3.MoveTowards(transform.position, nextTargetPoint, moveSpeed * Time.deltaTime);
                 transform.rotation = Quaternion.AngleAxis((nextTargetPoint - transform.position).normalized.y * moveRotateAngle, Vector3.right);
                 //此处旋转角度不需要带上deltaTime?
@@ -46,7 +49,7 @@ public class EnemyController : MonoBehaviour
                 nextTargetPoint = ViewportTool.Instance.GetEnemyRandomMovePosInHalfView(paddingX, paddingY);
             }
 
-            yield return null;
+            yield return null;//yield return new waitForFixedUpdate(); - 这样可以避免帧数很低时值过小 敌人不能正确的移动到新的随机位置
         }
     }
 
@@ -58,6 +61,7 @@ public class EnemyController : MonoBehaviour
 
             foreach (GameObject bullet in bullets)
             {
+                AudioManager.Instance.PlayRandomSFX(shootAudioData);
                 PoolManager.Instance.Release(bullet, muzzlePoint.position, muzzlePoint.rotation);
             }
         }

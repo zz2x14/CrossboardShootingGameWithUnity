@@ -16,6 +16,10 @@ public class PlayerMovement : MonoBehaviour
 
     private Coroutine speedChangeCor;
 
+    private Vector3 previousVelocity;
+    private Quaternion previousRotation;
+    private WaitForFixedUpdate fixedUpdateNull = new WaitForFixedUpdate();
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -70,15 +74,18 @@ public class PlayerMovement : MonoBehaviour
     {
         float t = 0;
 
+        previousVelocity = rb.velocity;
+        previousRotation = transform.rotation;//重点：使用lerp等线性插值函数时，改变媒介值后再赋予给目标值,避免在方法内持续改变产生偏差
+
         while(t <= time)
         {
             //// howGet: t += 1/time * Time.fixedDeltaTime 比如2s加速到最大速度，那么t每1秒增加 1/2 的值 t = Time.fixedDeltaTime/2;
             //t += Time.fixedDeltaTime / time; 
 
             t += Time.fixedDeltaTime;
-            rb.velocity = Vector2.Lerp(rb.velocity, targetVelocity, t / time); //?
-            transform.rotation = Quaternion.Lerp(transform.rotation, targerRotation, t / time);
-            yield return null;
+            rb.velocity = Vector2.Lerp(previousVelocity, targetVelocity, t / time); //?
+            transform.rotation = Quaternion.Lerp(previousRotation, targerRotation, t / time);
+            yield return fixedUpdateNull;//移动时会物理固定帧，挂起等待同理也该使用
         }
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5060298685065931926}
   - component: {fileID: 5391930259099200542}
   - component: {fileID: 3488799984586971651}
-  - component: {fileID: 6182393277995536946}
+  - component: {fileID: -8769364980298540961}
   m_Layer: 0
   m_Name: VFX_PlayerProjectileHit
   m_TagString: Untagged
@@ -4863,7 +4863,7 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &6182393277995536946
+--- !u!114 &-8769364980298540961
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4872,8 +4872,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 5060298685065931927}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b5f7379fc3e59144bf1f0f30d8a22ad, type: 3}
+  m_Script: {fileID: 11500000, guid: f7a9b4546cb9344489411ee2d66265a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyGameObject: 0
   lifetime: 0.5
+  needDestroy: 0

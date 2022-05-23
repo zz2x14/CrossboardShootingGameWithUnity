@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4801493125213720807}
   - component: {fileID: 6995926748601109512}
   - component: {fileID: 1287592681631902933}
-  - component: {fileID: 3711356417047784553}
+  - component: {fileID: -8029742812870483404}
   m_Layer: 0
   m_Name: VFX_Enemy01ProjectileHit_Tacking
   m_TagString: Untagged
@@ -4863,7 +4863,7 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &3711356417047784553
+--- !u!114 &-8029742812870483404
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4872,8 +4872,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 4801493125213720806}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b5f7379fc3e59144bf1f0f30d8a22ad, type: 3}
+  m_Script: {fileID: 11500000, guid: f7a9b4546cb9344489411ee2d66265a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyGameObject: 0
   lifetime: 1.5
+  needDestroy: 0

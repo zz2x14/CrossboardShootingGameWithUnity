@@ -4901,7 +4901,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4697173269294104}
-  - component: {fileID: 4904277321112532525}
+  - component: {fileID: 5185868081698695548}
   m_Layer: 0
   m_Name: VFX_PlayerDeath
   m_TagString: Untagged
@@ -4924,7 +4924,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4904277321112532525
+--- !u!114 &5185868081698695548
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4933,11 +4933,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1587261729604890}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b5f7379fc3e59144bf1f0f30d8a22ad, type: 3}
+  m_Script: {fileID: 11500000, guid: f7a9b4546cb9344489411ee2d66265a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyGameObject: 0
   lifetime: 4
+  needDestroy: 0
 --- !u!1 &1767264135607626
 GameObject:
   m_ObjectHideFlags: 0
