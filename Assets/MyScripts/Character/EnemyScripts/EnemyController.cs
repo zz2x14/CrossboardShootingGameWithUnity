@@ -5,8 +5,6 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [Header("ÒÆ¶¯")]
-    [SerializeField] private float paddingX;
-    [SerializeField] private float paddingY;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float moveRotateAngle;
 
@@ -16,6 +14,17 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Transform muzzlePoint;
     [SerializeField] private float minFireIntervel;
     [SerializeField] private float maxFireIntervel;
+
+    private Vector3 modelSize;
+    private float paddingX;
+    private float paddingY;
+
+    private void Awake()
+    {
+        modelSize = transform.GetChild(0).GetComponent<MeshRenderer>().bounds.size;
+        paddingX = modelSize.x / 2;
+        paddingY = modelSize.y / 2; 
+    }
 
     private void OnEnable()
     {

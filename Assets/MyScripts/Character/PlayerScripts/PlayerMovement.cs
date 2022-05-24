@@ -12,17 +12,35 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float decelerationTime;
     [SerializeField] private float moveRotateAngle;
 
+    public float MoveSpeed
+    {
+        get { return moveSpeed; }
+        set { moveSpeed = value; }
+    }
+
     private Rigidbody2D rb;
+
+    private float paddingX;
+    private float paddingY;
+    private Vector3 modelSize;
 
     private Coroutine speedChangeCor;
 
     private Vector3 previousVelocity;
     private Quaternion previousRotation;
-    private WaitForFixedUpdate fixedUpdateNull = new WaitForFixedUpdate();
 
-    private void Start()
+    private WaitForFixedUpdate fixedUpdateNull = new WaitForFixedUpdate();
+    private WaitForSeconds waitDecelerateOverWFS;
+
+    private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        waitDecelerateOverWFS = new WaitForSeconds(decelerationTime);
+
+        modelSize = transform.GetChild(0).GetComponent<MeshRenderer>().bounds.size;
+        paddingX = modelSize.x / 2;
+        paddingY = modelSize.y / 2;
     }
 
     private void OnEnable()
@@ -47,7 +65,9 @@ public class PlayerMovement : MonoBehaviour
         speedChangeCor = StartCoroutine(MoveSpeedChangeCoroutine(accelerationTime, moveInput * moveSpeed,
             Quaternion.AngleAxis(moveRotateAngle * moveInput.y, Vector3.right)));//沿着角色的X轴旋转N度( * 上输入的Y值，不同方向移动时对应不同的角度)
 
+        StopCoroutine(nameof(WaitDecelerateOverCor));
         StartCoroutine(nameof(LimitPlayerPosCoroutine));
+       
     }
 
     private void StopMove()
@@ -56,7 +76,15 @@ public class PlayerMovement : MonoBehaviour
         {
             StopCoroutine(speedChangeCor);
         }
+
         speedChangeCor = StartCoroutine(MoveSpeedChangeCoroutine(decelerationTime, Vector2.zero,Quaternion.identity));
+
+        StartCoroutine(nameof(WaitDecelerateOverCor));
+    }
+
+    IEnumerator WaitDecelerateOverCor()//等待减速完毕后再停止限制移动 - （否则）当移动到边缘上停止移动 减速未完毕 仍会超出屏幕范围
+    {
+        yield return waitDecelerateOverWFS;
 
         StopCoroutine(nameof(LimitPlayerPosCoroutine));
     }
@@ -65,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
     {
         while (true)
         {
-            transform.position = ViewportTool.Instance.GetLimitPosWithViewport(transform.position);
+            transform.position = ViewportTool.Instance.GetLimitPosWithViewport(transform.position,paddingX,paddingY);
             yield return null;
         }
     }

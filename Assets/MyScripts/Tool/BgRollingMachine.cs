@@ -11,10 +11,16 @@ public class BgRollingMachine : MonoBehaviour
     private void Start()
     {
        material = GetComponent<MeshRenderer>().material;
+
+        StartCoroutine(BgKeepRollingCor());
     }
 
-    private void Update()
+    IEnumerator BgKeepRollingCor()
     {
-       material.mainTextureOffset += rollVelocity * Time.deltaTime;
+        while (gameObject.activeSelf)
+        {
+            material.mainTextureOffset += rollVelocity * Time.deltaTime;
+            yield return null;
+        }
     }
 }

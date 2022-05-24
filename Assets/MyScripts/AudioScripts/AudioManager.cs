@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager : PersisentSingletonTool<AudioManager>
+public class AudioManager : PersistentSingletonTool<AudioManager>
 {
     [SerializeField] private AudioSource sFXPlayer;
 

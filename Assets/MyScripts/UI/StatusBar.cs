@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class StatusBar : MonoBehaviour
 {
-    private Canvas canvas;
-
     [SerializeField] private Image backBarImage;
     [SerializeField] private Image frontBarImage;
 
@@ -25,12 +23,13 @@ public class StatusBar : MonoBehaviour
 
     private float previousFillAmount;
 
-  
-    private void Start()
+    private void Awake()
     {
-        canvas = GetComponent<Canvas>();
-        canvas.worldCamera = Camera.main;
-
+        if(TryGetComponent(out Canvas canvas))//HUD合并后并不需要了 但是 玩家和敌人头上的画布还是需要相机的 
+        {
+            canvas.worldCamera = Camera.main;
+        }
+        
         delayFillWFS = new WaitForSeconds(delayFillTime);
     }
 

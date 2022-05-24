@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class PlayerController : Character
 {
-    
     [SerializeField] private bool enableRegenerate = true;
     [SerializeField] private float healthRegenerateInterval;
     [SerializeField,Range(0,0.1f)] private float healthRegeneratePercent;
@@ -26,29 +25,43 @@ public class PlayerController : Character
     [SerializeField] private AudioData shootAudioData;
 
     [Header("闪避")]
-    [SerializeField] private int dodgeEnergyCost;
+    [SerializeField] private float dodgeEnergyCost;
     [SerializeField] private float maxRollAngle;
     [SerializeField] private float dodgeRollSpeed;
     [SerializeField] private Vector3 dodgeScale;
     [SerializeField] private AudioData dodgeAudioData;
+
     private float curDodgeAngle;
     private bool isDodging = false;
-    private float  dodgeDuration;
+    private float dodgeDuration;
+
+    [Header("能量爆发")]
+    [SerializeField] private GameObject overdriveBullet;
+    [SerializeField] private float overdriveDodgeChangeRate;
+    [SerializeField] private float overdriveShootIntervalChangeRate;
+    [SerializeField] private float overdriveMoveSpeedChangeRate;
+    [SerializeField] private float overdriveBulletTimeDuration;
+
+    private bool isOverdriving;
 
     private Collider2D coll2D;
+    private PlayerMovement playerMovement;
 
     private WaitForSeconds fireWaitForSeconds;
+    private WaitForSeconds fireInOverdriveOnWFS;
     private WaitForSeconds healthRegenerateWFS;
-
+    
     private Coroutine startHealthRegenerateCor;
 
     private void Start()
     {
+        playerMovement = GetComponent<PlayerMovement>();
         coll2D = GetComponent<Collider2D>();
 
         playerInput.EnableGameplayInput();
 
         fireWaitForSeconds = new WaitForSeconds(fireInterval);//避免在循环内声明新的变量
+        fireInOverdriveOnWFS = new WaitForSeconds(fireInterval / overdriveShootIntervalChangeRate);
         healthRegenerateWFS = new WaitForSeconds(healthRegenerateInterval);
 
         statusBar_HUD.InitializeFillAmount(curHealth,maxHealth);
@@ -63,6 +76,10 @@ public class PlayerController : Character
         playerInput.OnStartFire += Fire;
         playerInput.OnStopFire += StopFire;
         playerInput.OnPlayerDodge += Dodge;
+        playerInput.OnPlayerOverdrive += Overdrive;
+
+        PlayerOverdrive.On += OverdriveOn;
+        PlayerOverdrive.Off += OverdriveOff;
     }
 
     private void OnDisable()
@@ -70,6 +87,7 @@ public class PlayerController : Character
         playerInput.OnStartFire -= Fire;
         playerInput.OnStopFire -= StopFire;
         playerInput.OnPlayerDodge -= Dodge;
+        playerInput.OnPlayerOverdrive -= Overdrive;
     }
 
     private void Fire()
@@ -89,7 +107,8 @@ public class PlayerController : Character
             switch (powerLevel)
             {
                 case 0:
-                    PoolManager.Instance.Release(standardBulletPrefab, muzzleMiddlePoint.position, muzzleMiddlePoint.rotation);
+                    PoolManager.Instance.Release(isOverdriving ? overdriveBullet : standardBulletPrefab, 
+                        muzzleMiddlePoint.position, muzzleMiddlePoint.rotation);
                     break;
                 case 1:
                     PoolManager.Instance.Release(standardBulletPrefab, muzzleTopPoint.position, muzzleTopPoint.rotation);
@@ -105,8 +124,8 @@ public class PlayerController : Character
             }
 
             AudioManager.Instance.PlayRandomSFX(shootAudioData);
-            
-            yield return fireWaitForSeconds;
+
+            yield return isOverdriving ? fireInOverdriveOnWFS : fireWaitForSeconds;
         }
     }
 
@@ -181,6 +200,29 @@ public class PlayerController : Character
 
         coll2D.isTrigger = false;
         isDodging = false;
+    }
+
+    private void Overdrive()
+    {
+        if (!PlayerEnergy.Instance.IsEnergyEnough(PlayerEnergy.MAXENERGY)) return;
+
+        PlayerOverdrive.On.Invoke();
+    }
+
+    private void OverdriveOn()
+    {
+        isOverdriving = true;
+        dodgeEnergyCost *= overdriveDodgeChangeRate;
+        playerMovement.MoveSpeed *= overdriveMoveSpeedChangeRate;
+
+        TimeController.Instance.StartBulletTime(overdriveBulletTimeDuration,overdriveBulletTimeDuration);
+    }
+
+    private void OverdriveOff()
+    {
+        isOverdriving = false;
+        dodgeEnergyCost /= overdriveDodgeChangeRate;
+        playerMovement.MoveSpeed /= overdriveMoveSpeedChangeRate;
     }
 
 }

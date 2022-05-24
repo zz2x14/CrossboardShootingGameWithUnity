@@ -26,6 +26,8 @@ public class EnemyManager : SingletonTool<EnemyManager>
 
     public int WaveNum => waveNum;
     public float WaveInterval => waveInterval;
+
+    public GameObject RandomEnemy => enemyList.Count > 0 ? enemyList[Random.Range(0, enemyList.Count)] : null;
    
     protected override void Awake()
     {

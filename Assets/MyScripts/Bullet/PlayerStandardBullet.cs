@@ -15,7 +15,6 @@ public class PlayerStandardBullet : BulletBase
     {
         base.OnEnable();
 
-
         if (moveDir != Vector2.right)
         {
             //避免出现意外情况 子弹没有朝向正确的方向(注意：此处旋转的是“子弹头”的位置)
@@ -32,6 +31,8 @@ public class PlayerStandardBullet : BulletBase
     {
         base.OnCollisionEnter2D(collision);
 
-        PlayerEnergy.Instance.ObtainEnergy(PlayerEnergy.HITADDEDVALUE);
+        PlayerEnergy.Instance.ObtainEnergy(PlayerEnergy.ENERGYADDEDVALUE);
     }
+
+    
 }

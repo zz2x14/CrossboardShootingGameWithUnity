@@ -10,10 +10,6 @@ public class ViewportTool : SingletonTool<ViewportTool>
     private float maxY;
     private float middleX;
 
-    [SerializeField] private float paddingX;
-    [SerializeField] private float paddingY;
-
-    
     private void Start()
     {
         Vector3 buttomLeftPoint = Camera.main.ViewportToWorldPoint(new Vector2(0f, 0f));
@@ -28,7 +24,7 @@ public class ViewportTool : SingletonTool<ViewportTool>
     }
 
     //限制player在视口屏幕上的移动范围
-    public Vector3 GetLimitPosWithViewport(Vector3 playerPos)
+    public Vector3 GetLimitPosWithViewport(Vector3 playerPos,float paddingX,float paddingY)
     {
         Vector3 limitPos = Vector3.zero;
 

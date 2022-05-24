@@ -10,7 +10,7 @@ public abstract class BulletBase : MonoBehaviour
     [SerializeField] private float flySpeed;
     [SerializeField] protected Vector2 moveDir;
 
-    protected Transform target;
+    protected GameObject target;
 
     protected virtual void OnEnable()
     {
@@ -21,9 +21,14 @@ public abstract class BulletBase : MonoBehaviour
     {
         while (gameObject.activeSelf)
         {
-            transform.Translate(moveDir * flySpeed *Time.deltaTime);
+            BulletNormalMove();
             yield return null;
         }
+    }
+
+    public void BulletNormalMove()
+    {
+        transform.Translate(moveDir * flySpeed * Time.deltaTime);
     }
 
    protected virtual void OnCollisionEnter2D(Collision2D collision)
@@ -38,5 +43,10 @@ public abstract class BulletBase : MonoBehaviour
             PoolManager.Instance.Release(hitVFX, collision.GetContact(0).point, Quaternion.LookRotation(collision.GetContact(0).normal));
             gameObject.SetActive(false);
         }
+    }
+
+    public void SetTarget(GameObject target)
+    {
+        this.target = target;//位置不可以为空 物体可以
     }
 }

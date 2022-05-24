@@ -6,7 +6,7 @@ public class EnemyBullet_Drifting : BulletBase
 {
     private void Awake()
     {
-        target = FindObjectOfType<PlayerController>().transform;
+        target = FindObjectOfType<PlayerController>().gameObject;
     }
 
     protected override void OnEnable()

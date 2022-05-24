@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScoreManager :  PersisentSingletonTool<ScoreManager>
+public class ScoreManager :  PersistentSingletonTool<ScoreManager>
 {
     private int score;
     private int curScore;

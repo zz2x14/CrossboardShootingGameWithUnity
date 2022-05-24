@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PersisentSingletonTool<T> : MonoBehaviour where T : PersisentSingletonTool<T>
+public class PersistentSingletonTool<T> : MonoBehaviour where T : PersistentSingletonTool<T>
 {
     public static T Instance { get; private set; }
 
