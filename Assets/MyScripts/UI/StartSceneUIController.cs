@@ -19,6 +19,7 @@ public class StartSceneUIController : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.GameState = GameState.Playing;//游戏开始时地默认状态为进行中
         Time.timeScale = 1f;//游戏暂停时回到主菜单恢复正常的timescale
     }
 

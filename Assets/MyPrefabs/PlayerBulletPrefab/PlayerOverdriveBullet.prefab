@@ -78,8 +78,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 8931248495700243039}
-  minBallisticAngle: -60
-  maxBallisticAngle: 60
+  minBallisticAngle: -50
+  maxBallisticAngle: 50
 --- !u!114 &8931248495700243039
 MonoBehaviour:
   m_ObjectHideFlags: 0

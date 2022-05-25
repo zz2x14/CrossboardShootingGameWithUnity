@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerOverdriveOnAudioData
   m_EditorClassIdentifier: 
   audioClip: {fileID: 8300000, guid: 62c5fc7ce12def64a84582fcf54974a1, type: 3}
-  audioVolume: 1
+  audioVolume: 1.5

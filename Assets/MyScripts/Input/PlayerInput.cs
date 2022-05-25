@@ -23,6 +23,8 @@ public class PlayerInput : ScriptableObject, IGameplayActions, IPauseMenuActions
     public event UnityAction OnGamePause = delegate { };
     public event UnityAction OnResumeGame = delegate { };
 
+    public event UnityAction OnLaunch = delegate { };
+
     private void OnEnable()
     {
         inputActions = new InputActions();
@@ -118,6 +120,14 @@ public class PlayerInput : ScriptableObject, IGameplayActions, IPauseMenuActions
         if (context.started)
         {
             OnResumeGame();
+        }
+    }
+
+    public void OnLaunchMissile(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            OnLaunch();
         }
     }
 }

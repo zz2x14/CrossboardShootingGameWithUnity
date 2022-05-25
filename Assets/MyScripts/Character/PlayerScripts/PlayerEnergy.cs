@@ -15,7 +15,7 @@ public class PlayerEnergy : SingletonTool<PlayerEnergy>
 
     private WaitForSeconds overdriveCostIntervalWFS;
 
-    private bool canObtianEnergy;
+    private bool canObtianEnergy = true;
 
     protected override void Awake()
     {
@@ -47,7 +47,7 @@ public class PlayerEnergy : SingletonTool<PlayerEnergy>
     public void ObtainEnergy(float value)
     {
         if (curEnergy == MAXENERGY || !gameObject.activeSelf || !canObtianEnergy) return;//能量爆发时不能获得能量?是否更改为可以获得
-
+       
         curEnergy = Mathf.Clamp(curEnergy + value, 0, MAXENERGY);
         energyBar.UpdateFillAmount(curEnergy, MAXENERGY);
     }

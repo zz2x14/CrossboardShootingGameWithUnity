@@ -42,7 +42,7 @@ public class EnemyManager : SingletonTool<EnemyManager>
     {
         while (enableSpawn)
         {
-            yield return unitlNoEnemy;//等到满足条件
+            //yield return unitlNoEnemy;//等到满足条件 - 没有敌人时
             waveHUDUI.SetActive(true);
             yield return waveIntervalWFS;//等到每波间隔
             waveHUDUI.SetActive(false);
@@ -62,9 +62,10 @@ public class EnemyManager : SingletonTool<EnemyManager>
             yield return spawnIntervalWFS;
         }
 
-        waveNum++;
+        yield return unitlNoEnemy;//没有敌人后再继续执行相关(循环)逻辑
+        //将此代码放在此处 - 避免敌人还没全部生成完毕就被消灭，导致出现 后续敌人不会继续生成，直接生成下一波 的情况
 
-        yield return null;
+        waveNum++;
     }
 
     public void RemoveFromEnemyList(GameObject go)

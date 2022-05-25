@@ -19,7 +19,11 @@ public class BgRollingMachine : MonoBehaviour
     {
         while (gameObject.activeSelf)
         {
-            material.mainTextureOffset += rollVelocity * Time.deltaTime;
+            if(GameManager.Instance.GameState != GameState.GameOver)
+            {
+                material.mainTextureOffset += rollVelocity * Time.deltaTime;
+            }
+            
             yield return null;
         }
     }

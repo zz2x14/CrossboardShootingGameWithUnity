@@ -6,7 +6,7 @@ public class PlayerStandardBullet : BulletBase
 {
     private TrailRenderer trail;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         trail = GetComponentInChildren<TrailRenderer>();
     }
@@ -29,9 +29,9 @@ public class PlayerStandardBullet : BulletBase
 
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
-        base.OnCollisionEnter2D(collision);
-
         PlayerEnergy.Instance.ObtainEnergy(PlayerEnergy.ENERGYADDEDVALUE);
+
+        base.OnCollisionEnter2D(collision);
     }
 
     

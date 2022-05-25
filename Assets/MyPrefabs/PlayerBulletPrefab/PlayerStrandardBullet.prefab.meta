@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: 173ee087ae04ef94183672fab5166533
+labels:
+- PlayerBulletPrefab
 PrefabImporter:
   externalObjects: {}
   userData: 

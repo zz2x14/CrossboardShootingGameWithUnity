@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: EnemyDeathAudioData02
   m_EditorClassIdentifier: 
   audioClip: {fileID: 8300000, guid: 0f2184b0c1d094741b11e8f4077c52e9, type: 3}
-  audioVolume: 1
+  audioVolume: 1.5

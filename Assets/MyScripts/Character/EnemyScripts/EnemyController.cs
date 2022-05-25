@@ -68,6 +68,8 @@ public class EnemyController : MonoBehaviour
         {
             yield return new WaitForSeconds(Random.Range(minFireIntervel, maxFireIntervel));
 
+            if(GameManager.Instance.GameState == GameState.GameOver) yield break;//玩家死亡时游戏进入结束状态 直接跳出协程 敌人不再开火
+
             foreach (GameObject bullet in bullets)
             {
                 AudioManager.Instance.PlayRandomSFX(shootAudioData);

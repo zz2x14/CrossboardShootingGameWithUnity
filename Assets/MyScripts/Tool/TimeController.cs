@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class TimeController : PersistentSingletonTool<TimeController>
 {
@@ -10,11 +11,28 @@ public class TimeController : PersistentSingletonTool<TimeController>
 
     private float bulletTimeTimer;
 
+    private float timeScaleBeforePaused;
+
     protected override void Awake()
     {
         base.Awake();
 
         defaultFixdTime = Time.fixedDeltaTime;
+    }
+
+    public void Pause()
+    {
+        timeScaleBeforePaused = Time.timeScale;//记录游戏暂停前的timescale，让回到游戏时能正确地延续之前的timescale
+
+        Time.timeScale = 0f;
+
+        GameManager.Instance.GameState = GameState.Paused;
+    }
+    public void Unpause()
+    {
+        Time.timeScale = timeScaleBeforePaused;
+
+        GameManager.Instance.GameState = GameState.Playing;
     }
 
     public void StartBulletTime(float duration)
@@ -62,11 +80,15 @@ public class TimeController : PersistentSingletonTool<TimeController>
 
         while (bulletTimeTimer < 1f)
         {
-            bulletTimeTimer += 1 / duration * Time.unscaledDeltaTime;
-            Time.timeScale = Mathf.Lerp(1f, scaleOfBulletTime, bulletTimeTimer);
-            Time.fixedDeltaTime = defaultFixdTime * Time.timeScale;//若使用了固定帧 那么固定帧需要改变 - 避免出现明显的卡顿感
-            //是否可以根据需求 将deltatime、fixeddeltatime 直接改成timescale避免某些操作受到上一行所述的影响 ：思考后 不利于游戏的长期开发
-            yield return null;
+            if(GameManager.Instance.GameState != GameState.Paused)
+            {
+                bulletTimeTimer += 1 / duration * Time.unscaledDeltaTime;
+                Time.timeScale = Mathf.Lerp(1f, scaleOfBulletTime, bulletTimeTimer);
+                Time.fixedDeltaTime = defaultFixdTime * Time.timeScale;//若使用了固定帧 那么固定帧需要改变 - 避免出现明显的卡顿感
+                //是否可以根据需求 将deltatime、fixeddeltatime 直接改成timescale避免某些操作受到上一行所述的影响 ：思考后 不利于游戏的长期开发
+            }
+
+            yield return null;//协程内部打断时 等待挂起要写在条件外 写在内部等于没有了 程序会判断进入死循环逻辑
         }
     }
     IEnumerator TimeSlowOutCor(float duration)
@@ -75,9 +97,13 @@ public class TimeController : PersistentSingletonTool<TimeController>
 
         while(bulletTimeTimer < 1f)
         {
-            bulletTimeTimer += 1 / duration * Time.unscaledDeltaTime;
-            Time.timeScale = Mathf.Lerp(Time.timeScale, 1f, bulletTimeTimer);
-            Time.fixedDeltaTime = defaultFixdTime * Time.timeScale;
+            if(GameManager.Instance.GameState != GameState.Paused)
+            {
+                bulletTimeTimer += 1 / duration * Time.unscaledDeltaTime;
+                Time.timeScale = Mathf.Lerp(scaleOfBulletTime, 1f, bulletTimeTimer);
+                Time.fixedDeltaTime = defaultFixdTime * Time.timeScale;
+            }
+
             yield return null;
         }
     }

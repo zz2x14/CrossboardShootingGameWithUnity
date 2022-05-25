@@ -7,7 +7,7 @@ public abstract class BulletBase : MonoBehaviour
     [SerializeField] protected AudioData[] bulletHitAudioDatas;
     [SerializeField] private float damage;
     [SerializeField] private GameObject hitVFX;
-    [SerializeField] private float flySpeed;
+    [SerializeField] protected float flySpeed;
     [SerializeField] protected Vector2 moveDir;
 
     protected GameObject target;
@@ -38,9 +38,12 @@ public abstract class BulletBase : MonoBehaviour
         if (collision.gameObject.TryGetComponent<Character>(out Character target))
         {
             AudioManager.Instance.PlayRandomSFX(bulletHitAudioDatas);
+
             target.TakenDamage(damage);
+
             //collision.GetContact(0) - 两者碰撞的第一个点 //碰撞点的法线...不太懂 不过效果确实更好
             PoolManager.Instance.Release(hitVFX, collision.GetContact(0).point, Quaternion.LookRotation(collision.GetContact(0).normal));
+
             gameObject.SetActive(false);
         }
     }

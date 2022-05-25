@@ -42,10 +42,14 @@ public class PlayerController : Character
     [SerializeField] private float overdriveMoveSpeedChangeRate;
     [SerializeField] private float overdriveBulletTimeDuration;
 
+    [Header("µºµØπ•ª˜")]
+    [SerializeField] private Transform missileMuzzlePoint;
+
     private bool isOverdriving;
 
     private Collider2D coll2D;
     private PlayerMovement playerMovement;
+    private PlayerMissileSystem playerMissileSystem;
 
     private WaitForSeconds fireWaitForSeconds;
     private WaitForSeconds fireInOverdriveOnWFS;
@@ -56,6 +60,7 @@ public class PlayerController : Character
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        playerMissileSystem = GetComponent<PlayerMissileSystem>(); 
         coll2D = GetComponent<Collider2D>();
 
         playerInput.EnableGameplayInput();
@@ -77,6 +82,7 @@ public class PlayerController : Character
         playerInput.OnStopFire += StopFire;
         playerInput.OnPlayerDodge += Dodge;
         playerInput.OnPlayerOverdrive += Overdrive;
+        playerInput.OnLaunch += LauchMissile;
 
         PlayerOverdrive.On += OverdriveOn;
         PlayerOverdrive.Off += OverdriveOff;
@@ -88,6 +94,10 @@ public class PlayerController : Character
         playerInput.OnStopFire -= StopFire;
         playerInput.OnPlayerDodge -= Dodge;
         playerInput.OnPlayerOverdrive -= Overdrive;
+        playerInput.OnLaunch -= LauchMissile;
+
+        PlayerOverdrive.On -= OverdriveOn;
+        PlayerOverdrive.Off -= OverdriveOff;
     }
 
     private void Fire()
@@ -156,7 +166,10 @@ public class PlayerController : Character
     protected override void Die()
     {
         statusBar_HUD.UpdateFillAmount(0f,maxHealth);
+        
         base.Die();
+
+        GameManager.Instance.GameState = GameState.GameOver;//À¿Õˆ”Œœ∑Ω· ¯
     }
 
     private void Dodge()
@@ -223,6 +236,11 @@ public class PlayerController : Character
         isOverdriving = false;
         dodgeEnergyCost /= overdriveDodgeChangeRate;
         playerMovement.MoveSpeed /= overdriveMoveSpeedChangeRate;
+    }
+
+    private void LauchMissile()
+    {
+        playerMissileSystem.LauchMissile(missileMuzzlePoint) ;
     }
 
 }
