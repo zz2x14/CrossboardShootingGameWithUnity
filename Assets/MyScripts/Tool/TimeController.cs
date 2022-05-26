@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class TimeController : PersistentSingletonTool<TimeController>
+public class TimeController : SingletonTool<TimeController>
 {
     [SerializeField] private float scaleOfBulletTime;
 

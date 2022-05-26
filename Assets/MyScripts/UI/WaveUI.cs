@@ -9,8 +9,8 @@ public class WaveUI : MonoBehaviour
     private Canvas canvas;
     private Animator anim;
 
-    private RectTransform topLineTransform;
-    private RectTransform bottomLineTransform;
+    //private RectTransform topLineTransform;
+    //private RectTransform bottomLineTransform;
 
     [SerializeField] private Vector3 topLinePosOffView;
     [SerializeField] private Vector3 topLinePosCenterView;

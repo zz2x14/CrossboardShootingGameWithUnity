@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using static InputActions;
 
 [CreateAssetMenu(menuName = "Player Input")]
-public class PlayerInput : ScriptableObject, IGameplayActions, IPauseMenuActions
+public class PlayerInput : ScriptableObject, IGameplayActions, IPauseMenuActions,IGameOverScreenActions
 {
     private InputActions inputActions;
 
@@ -25,12 +25,15 @@ public class PlayerInput : ScriptableObject, IGameplayActions, IPauseMenuActions
 
     public event UnityAction OnLaunch = delegate { };
 
+    public event UnityAction OnGameOver = delegate { };
+
     private void OnEnable()
     {
         inputActions = new InputActions();
 
         inputActions.Gameplay.SetCallbacks(this);//在inputactions中登记
         inputActions.PauseMenu.SetCallbacks(this);
+        inputActions.GameOverScreen.SetCallbacks(this);
     }
 
     private void OnDisable()
@@ -56,6 +59,7 @@ public class PlayerInput : ScriptableObject, IGameplayActions, IPauseMenuActions
     }
     public void EnableGameplayInput() => SwitchInputAction(inputActions.Gameplay, false); 
     public void EnablePauseMenuInput() => SwitchInputAction(inputActions.PauseMenu, true);
+    public void EnableGameOverInput() => SwitchInputAction(inputActions.GameOverScreen, false);
 
     //停止timescale时 需要切换输入系统的更新模式 - 否则暂停后不能再按下回到游戏中（因为无法接收到按键按下信号）
     public void SwitchToDynamicMode() => InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
@@ -128,6 +132,14 @@ public class PlayerInput : ScriptableObject, IGameplayActions, IPauseMenuActions
         if (context.started)
         {
             OnLaunch();
+        }
+    }
+
+    public void OnConfirmGameOver(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            OnGameOver();
         }
     }
 }

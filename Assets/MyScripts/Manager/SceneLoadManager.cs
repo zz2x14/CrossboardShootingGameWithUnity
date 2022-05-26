@@ -8,6 +8,7 @@ public class SceneLoadManager : PersistentSingletonTool<SceneLoadManager>
 {
     private const string SCENENAME_GAMEPLAY = "Gameplay";
     private const string SCENENAME_STARTSCENE = "StartScene";
+    private const string SCENENAME_SCORINGSCENE = "ScoringScene";
 
     [SerializeField] private Image faderImage;
     [SerializeField] private float faderTime;
@@ -46,7 +47,6 @@ public class SceneLoadManager : PersistentSingletonTool<SceneLoadManager>
         faderImage.gameObject.SetActive(false);
     }
 
-
     public void LoadGameplayScene()
     {
         StopAllCoroutines();//避免反复切换时上一个切换协程还未结束
@@ -57,5 +57,11 @@ public class SceneLoadManager : PersistentSingletonTool<SceneLoadManager>
     {
         StopAllCoroutines();
         StartCoroutine(LoadSceneCor(SCENENAME_STARTSCENE));
+    }
+
+    public void LoadScoringScene()
+    {
+        StopAllCoroutines();
+        StartCoroutine(LoadSceneCor(SCENENAME_SCORINGSCENE));
     }
 }

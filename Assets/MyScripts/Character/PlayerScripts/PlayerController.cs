@@ -169,6 +169,7 @@ public class PlayerController : Character
         
         base.Die();
 
+        GameManager.Instance.OnGameOver?.Invoke();//死亡通知游戏结束
         GameManager.Instance.GameState = GameState.GameOver;//死亡游戏结束
     }
 

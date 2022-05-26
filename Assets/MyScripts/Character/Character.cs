@@ -92,4 +92,13 @@ public abstract class Character : MonoBehaviour
         healthBar.gameObject.SetActive(false);
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.TryGetComponent(out PlayerController player))
+        {
+            Die();
+            player.Die();
+        }
+    }
+
 }
